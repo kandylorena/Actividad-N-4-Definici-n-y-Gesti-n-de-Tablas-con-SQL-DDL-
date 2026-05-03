@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:17
+    # Borramos container_name: db_actividad5
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: db_actividad5
+    ports:
+      - "5433:5432" # Puerto único, muy bien.
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    # Borramos container_name: pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_PROXY_X_HOST_COUNT: 1
+      PGADMIN_CONFIG_PROXY_X_PREFIX_COUNT: 1
+    ports:
+      - "5050:80" # <-- OJO: Si ya tienes otro pgAdmin, cambia el 5050 por 5051
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
